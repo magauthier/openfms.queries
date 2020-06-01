@@ -1,0 +1,351 @@
+{
+	"info": {
+		"_postman_id": "31a4ff5d-8606-4a50-bcce-fd5ccb55931e",
+		"name": "openfms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RealtimeService",
+			"item": [
+				{
+					"name": "LastState.Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/deviceLastState/get",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"deviceLastState",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LastState.Find",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/deviceLastState/find?_id=1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"deviceLastState",
+								"find"
+							],
+							"query": [
+								{
+									"key": "_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/health/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"health",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DeviceService",
+			"item": [
+				{
+					"name": "Position.Receive",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fd37cec1-f715-44ed-ae56-b0431c6738e0",
+								"exec": [
+									"const DevieIDs = [3305384, 3101397, 3113578, 3300844, 3300845];",
+									"const DeviceIDIndex = Math.floor(Math.random() * 5);",
+									"pm.globals.set('randomDeviceID', DevieIDs[DeviceIDIndex]);",
+									"",
+									"",
+									"const Cities = [\"Montreal\", \"Longueuil\", \"Laval\", \"Québec\", \"New York\"];",
+									"const CityIndex = Math.floor(Math.random() * 5);",
+									"pm.globals.set('randomCity', Cities[CityIndex]);",
+									"",
+									"",
+									"pm.globals.set('randomLatitude', Math.floor(Math.random() * 90));",
+									"pm.globals.set('randomLongitude', Math.floor(Math.random() * -180));",
+									"pm.globals.set('randomHeading', Math.floor(Math.random() * 359));",
+									"",
+									"pm.globals.set('randomSpeed', Math.floor(Math.random() * 120));",
+									"",
+									"",
+									"const States = [\"Moving\",\"Idle\",\"Stopped\"];",
+									"const StateIndex = Math.floor(Math.random() * 3);",
+									"pm.globals.set('randomState', States[StateIndex]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"DeviceID\": {{randomDeviceID}},\r\n    \"Location\": \"{{randomCity}}\",\r\n    \"Latitude\": {{randomLatitude}},\r\n    \"Longitude\": {{randomLongitude}},\r\n    \"Heading\": {{randomHeading}},\r\n    \"Speed\": {{randomSpeed}},\r\n    \"State\": \"{{randomState}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5001/position/receive",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"position",
+								"receive"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5001/health",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Device.Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5001/device/get",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"device",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Device.Add",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "eda6931e-f04a-48e8-befb-ff11a6cc4363",
+								"exec": [
+									"const DevieIDs = [3305384, 3101397, 3113578, 3300844, 3300845];\r",
+									"const DeviceIDIndex = Math.floor(Math.random() * 5);\r",
+									"pm.globals.set('randomDeviceID', DevieIDs[DeviceIDIndex]);\r",
+									"\r",
+									"const VehicleBrands = ['Toyota', 'Nissan', 'Volvo', 'Ford', 'Honda', 'Hyunday'];\r",
+									"const VehicleBrandIndex = Math.floor(Math.random() * 6);\r",
+									"pm.globals.set('randomVehicleName',  VehicleBrands[VehicleBrandIndex] + ' - ' + (500 + Math.floor(Math.random() * 9500)));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"deviceID\": \"{{randomDeviceID}}\",\n\t\"vehicleName\": \"{{randomVehicleName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5001/device/add",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"device",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Device.ClearAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5001/device/clearAll",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"device",
+								"clearAll"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DeviceEventService",
+			"item": [
+				{
+					"name": "Position.Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5002/position/get",
+							"host": [
+								"localhost"
+							],
+							"port": "5002",
+							"path": [
+								"position",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Position.Add",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "51722f13-4fcd-4281-8b02-8616987ebb76",
+								"exec": [
+									"const DevieIDs = [3305384, 3101397, 3113578, 3300844, 3300845];",
+									"const DeviceIDIndex = Math.floor(Math.random() * 5);",
+									"pm.globals.set('randomDeviceID', DevieIDs[DeviceIDIndex]);",
+									"",
+									"",
+									"const Cities = [\"Montreal\", \"Longueuil\", \"Laval\", \"Québec\", \"New York\"];",
+									"const CityIndex = Math.floor(Math.random() * 5);",
+									"pm.globals.set('randomCity', Cities[CityIndex]);",
+									"",
+									"",
+									"pm.globals.set('randomLatitude', Math.floor(Math.random() * 90));",
+									"pm.globals.set('randomLongitude', Math.floor(Math.random() * -180));",
+									"pm.globals.set('randomHeading', Math.floor(Math.random() * 359));",
+									"",
+									"pm.globals.set('randomSpeed', Math.floor(Math.random() * 120));",
+									"",
+									"",
+									"const States = [\"Moving\",\"Idle\",\"Stopped\"];",
+									"const StateIndex = Math.floor(Math.random() * 3);",
+									"pm.globals.set('randomState', States[StateIndex]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"DeviceID\": {{randomDeviceID}},\r\n    \"Location\": \"{{randomCity}}\",\r\n    \"Latitude\": {{randomLatitude}},\r\n    \"Longitude\": {{randomLongitude}},\r\n    \"Heading\": {{randomHeading}},\r\n    \"Speed\": {{randomSpeed}},\r\n    \"State\": \"{{randomState}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5002/position/add",
+							"host": [
+								"localhost"
+							],
+							"port": "5002",
+							"path": [
+								"position",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Position.ClearAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5002/position/clearAll",
+							"host": [
+								"localhost"
+							],
+							"port": "5002",
+							"path": [
+								"position",
+								"clearAll"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
